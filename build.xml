@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="googlemusic" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  
+  <!-- Global Libraries -->
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module GoogleMusic -->
+  
+  <dirname property="module.googlemusic.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.googlemusic" value="${compiler.args}"/>
+  
+  <property name="googlemusic.output.dir" value="${module.googlemusic.basedir}/out/production/GoogleMusic"/>
+  <property name="googlemusic.testoutput.dir" value="${module.googlemusic.basedir}/out/test/GoogleMusic"/>
+  
+  <path id="googlemusic.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="googlemusic.module.production.classpath"/>
+  
+  <path id="googlemusic.runtime.production.module.classpath">
+    <pathelement location="${googlemusic.output.dir}"/>
+  </path>
+  
+  <path id="googlemusic.module.classpath">
+    <pathelement location="${googlemusic.output.dir}"/>
+  </path>
+  
+  <path id="googlemusic.runtime.module.classpath">
+    <pathelement location="${googlemusic.testoutput.dir}"/>
+    <pathelement location="${googlemusic.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.googlemusic">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.googlemusic">
+    <patternset refid="excluded.from.module.googlemusic"/>
+  </patternset>
+  
+  <path id="googlemusic.module.sourcepath">
+    <dirset dir="${module.googlemusic.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.googlemusic" depends="compile.module.googlemusic.production,compile.module.googlemusic.tests" description="Compile module GoogleMusic"/>
+  
+  <target name="compile.module.googlemusic.production" description="Compile module GoogleMusic; production classes">
+    <mkdir dir="${googlemusic.output.dir}"/>
+    <javac destdir="${googlemusic.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.googlemusic}"/>
+      <bootclasspath refid="googlemusic.module.bootclasspath"/>
+      <classpath refid="googlemusic.module.production.classpath"/>
+      <src refid="googlemusic.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.googlemusic"/>
+    </javac>
+    
+    <copy todir="${googlemusic.output.dir}">
+      <fileset dir="/">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.googlemusic.tests" depends="compile.module.googlemusic.production" description="compile module GoogleMusic; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.googlemusic" description="cleanup module">
+    <delete dir="${googlemusic.output.dir}"/>
+    <delete dir="${googlemusic.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.googlemusic" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.googlemusic" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
