@@ -9,6 +9,7 @@ bin/**
 tmp/**
 tmp/**/*
 *.tmp
+.idea/
 *.bak
 *.swp
 *~.nib
