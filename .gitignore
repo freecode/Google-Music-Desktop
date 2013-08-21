@@ -2,7 +2,6 @@
 *.iml
 *.ipr
 *.iws
-.idea/
 *.pydevproject
 .project
 .metadata
