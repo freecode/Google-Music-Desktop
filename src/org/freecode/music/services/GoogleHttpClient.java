@@ -1,10 +1,5 @@
 package org.freecode.music.services;
 
-/**
- * User: Shivam
- * Date: 20/08/13
- * Time: 16:40
- */
 public class GoogleHttpClient {
    	//CONSTANTS
 	private static final String COOKIE_FORMAT = "?u=0&xt=%1$s";
