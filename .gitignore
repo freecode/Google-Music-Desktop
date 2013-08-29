@@ -2,6 +2,7 @@
 *.iml
 *.ipr
 *.iws
+.idea/
 *.pydevproject
 .project
 .metadata
@@ -9,7 +10,6 @@ bin/**
 tmp/**
 tmp/**/*
 *.tmp
-.idea/
 *.bak
 *.swp
 *~.nib
