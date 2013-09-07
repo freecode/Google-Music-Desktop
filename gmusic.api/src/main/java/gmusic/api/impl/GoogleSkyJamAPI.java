@@ -4,19 +4,11 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Jens Kristian Villadsen - initial API and implementation
  ******************************************************************************/
 package gmusic.api.impl;
-
-import gmusic.api.comm.Util;
-import gmusic.api.interfaces.IGoogleHttpClient;
-import gmusic.api.interfaces.IJsonDeserializer;
-import gmusic.api.skyjam.interfaces.IGoogleSkyJam;
-import gmusic.api.skyjam.model.Playlists;
-import gmusic.api.skyjam.model.Track;
-import gmusic.api.skyjam.model.TrackFeed;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,22 +21,25 @@ import java.util.Collection;
 
 import com.google.common.base.Strings;
 import com.google.common.io.Closeables;
+import gmusic.api.comm.Util;
+import gmusic.api.interfaces.IGoogleHttpClient;
+import gmusic.api.interfaces.IJsonDeserializer;
+import gmusic.api.skyjam.interfaces.IGoogleSkyJam;
+import gmusic.api.skyjam.model.Playlists;
+import gmusic.api.skyjam.model.Track;
+import gmusic.api.skyjam.model.TrackFeed;
 
-public class GoogleSkyJamAPI extends GoogleMusicAPI implements IGoogleSkyJam
-{
-	public GoogleSkyJamAPI()
-	{
+public class GoogleSkyJamAPI extends GoogleMusicAPI implements IGoogleSkyJam {
+	public GoogleSkyJamAPI() {
 		super();
 	}
 
-	public GoogleSkyJamAPI(IGoogleHttpClient httpClient, IJsonDeserializer deserializer, File file)
-	{
+	public GoogleSkyJamAPI(IGoogleHttpClient httpClient, IJsonDeserializer deserializer, File file) {
 		super(httpClient, deserializer, file);
 	}
 
 	@Override
-	public Collection<Track> getAllTracks() throws IOException, URISyntaxException
-	{
+	public Collection<Track> getAllTracks() throws IOException, URISyntaxException {
 		final Collection<Track> chunkedCollection = new ArrayList<Track>();
 		final TrackFeed chunk = deserializer.deserialize(client.dispatchGet(new URI(HTTPS_WWW_GOOGLEAPIS_COM_SJ_V1BETA1_TRACKS)), TrackFeed.class);
 		chunkedCollection.addAll(chunk.getData().getItems());
@@ -52,43 +47,36 @@ public class GoogleSkyJamAPI extends GoogleMusicAPI implements IGoogleSkyJam
 		return chunkedCollection;
 	}
 
-	private final Collection<Track> getTracks(String continuationToken) throws IOException, URISyntaxException
-	{
+	private final Collection<Track> getTracks(String continuationToken) throws IOException, URISyntaxException {
 		Collection<Track> chunkedCollection = new ArrayList<Track>();
 
 		TrackFeed chunk = deserializer.deserialize(client.dispatchPost(new URI(HTTPS_WWW_GOOGLEAPIS_COM_SJ_V1BETA1_TRACKFEED), "{\"start-token\":\"" + continuationToken + "\"}"), TrackFeed.class);
 		chunkedCollection.addAll(chunk.getData().getItems());
 
-		if(!Strings.isNullOrEmpty(chunk.getNextPageToken()))
-		{
+		if (!Strings.isNullOrEmpty(chunk.getNextPageToken())) {
 			chunkedCollection.addAll(getTracks(chunk.getNextPageToken()));
 		}
 		return chunkedCollection;
 	}
 
 	@Override
-	public Collection<File> downloadTracks(Collection<Track> tracks) throws URISyntaxException, IOException
-	{
+	public Collection<File> downloadTracks(Collection<Track> tracks) throws URISyntaxException, IOException {
 		Collection<File> files = new ArrayList<File>();
-		for(Track track : tracks)
-		{
+		for (Track track : tracks) {
 			files.add(downloadTrack(track));
 		}
 		return files;
 	}
 
 	@Override
-	public URI getTrackURL(Track track) throws URISyntaxException, IOException
-	{
+	public URI getTrackURL(Track track) throws URISyntaxException, IOException {
 		return getTuneURL(track);
 	}
 
 	@Override
-	public File downloadTrack(Track track) throws URISyntaxException, IOException
-	{
+	public File downloadTrack(Track track) throws URISyntaxException, IOException {
 		File file = new File(storageDirectory.getAbsolutePath() + track.getId() + ".mp3");
-		if(!file.exists())
-		{
+		if (!file.exists()) {
 			ByteBuffer buffer = Util.uriTobuffer(getTuneURL(track));
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(buffer.array());
@@ -107,15 +95,13 @@ public class GoogleSkyJamAPI extends GoogleMusicAPI implements IGoogleSkyJam
 	}
 
 	@Override
-	public Playlists getAllSkyJamPlaylists() throws IOException, URISyntaxException
-	{
+	public Playlists getAllSkyJamPlaylists() throws IOException, URISyntaxException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public TrackFeed getSkyJamPlaylist(String plID) throws IOException, URISyntaxException
-	{
+	public TrackFeed getSkyJamPlaylist(String plID) throws IOException, URISyntaxException {
 		// TODO Auto-generated method stub
 		return null;
 	}

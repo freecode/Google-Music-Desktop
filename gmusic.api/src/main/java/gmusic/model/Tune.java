@@ -4,14 +4,13 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Jens Kristian Villadsen - initial API and implementation
  ******************************************************************************/
 package gmusic.model;
 
-public abstract class Tune
-{
+public abstract class Tune {
 	protected String genre;
 	protected int beatsPerMinute;
 	protected String album;
@@ -25,61 +24,62 @@ public abstract class Tune
 	protected boolean deleted;
 	protected int playCount;
 	protected String rating;
-	public final String getGenre()
-	{
+
+	public final String getGenre() {
 		return genre;
 	}
-	public final int getBeatsPerMinute()
-	{
+
+	public final int getBeatsPerMinute() {
 		return beatsPerMinute;
 	}
-	public final String getAlbum()
-	{
+
+	public final String getAlbum() {
 		return album;
 	}
-	public final String getId()
-	{
+
+	public final String getId() {
 		return id;
 	}
-	public final String getComposer()
-	{
+
+	public final String getComposer() {
 		return composer;
 	}
-	public final String getTitle()
-	{
+
+	public final String getTitle() {
 		return title;
 	}
-	public final String getAlbumArtist()
-	{
+
+	public final String getAlbumArtist() {
 		return albumArtist;
 	}
-	public final int getYear()
-	{
+
+	public final int getYear() {
 		return year;
 	}
-	public final String getArtist()
-	{
+
+	public final String getArtist() {
 		return artist;
 	}
-	public final long getDurationMillis()
-	{
+
+	public final long getDurationMillis() {
 		return durationMillis;
 	}
-	public final boolean isDeleted()
-	{
+
+	public final boolean isDeleted() {
 		return deleted;
 	}
-	public final int getPlayCount()
-	{
+
+	public final int getPlayCount() {
 		return playCount;
 	}
-	public final String getRating()
-	{
+
+	public final String getRating() {
 		return rating;
 	}
-	public final String getComment()
-	{
+
+	public final String getComment() {
 		return comment;
 	}
+
 	protected String comment;
 }

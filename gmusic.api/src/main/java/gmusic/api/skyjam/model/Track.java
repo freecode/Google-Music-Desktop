@@ -4,18 +4,17 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Jens Kristian Villadsen - initial API and implementation
  ******************************************************************************/
 package gmusic.api.skyjam.model;
 
-import gmusic.model.Tune;
-
 import java.util.Collection;
 
-public class Track extends Tune
-{
+import gmusic.model.Tune;
+
+public class Track extends Tune {
 	private int discNumber;
 	private int totalDiscCount;
 	private Collection<AlbumArtRef> albumArtRef;
@@ -26,51 +25,47 @@ public class Track extends Tune
 	private long creationTimestamp;
 	private long lastModifiedTimestamp;
 
-	public final void setId(String id)
-	{
+	public final void setId(String id) {
 		this.id = id;
 	}
-	public final String getClientId()
-	{
+
+	public final String getClientId() {
 		return clientId;
 	}
-	public final long getCreationTimestamp()
-	{
+
+	public final long getCreationTimestamp() {
 		return creationTimestamp;
 	}
-	public final long getLastModifiedTimestamp()
-	{
+
+	public final long getLastModifiedTimestamp() {
 		return lastModifiedTimestamp;
 	}
 
-	public final void setTitle(String title)
-	{
+	public final void setTitle(String title) {
 		this.title = title;
 	}
 
-	public final int getTrackNumber()
-	{
+	public final int getTrackNumber() {
 		return trackNumber;
 	}
 
-	public final Collection<AlbumArtRef> getAlbumArtRef()
-	{
+	public final Collection<AlbumArtRef> getAlbumArtRef() {
 		return albumArtRef;
 	}
-	public final int getTotalTrackCount()
-	{
+
+	public final int getTotalTrackCount() {
 		return totalTrackCount;
 	}
-	public final int getDiscNumber()
-	{
+
+	public final int getDiscNumber() {
 		return discNumber;
 	}
-	public final int getTotalDiscCount()
-	{
+
+	public final int getTotalDiscCount() {
 		return totalDiscCount;
 	}
-	public final long getEstimatedSize()
-	{
+
+	public final long getEstimatedSize() {
 		return estimatedSize;
 	}
 
