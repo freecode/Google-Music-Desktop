@@ -1,7 +1,5 @@
 package org.freecode.gmusic;
 
-import gmusic.api.impl.GoogleMusicAPI;
-import gmusic.api.impl.GoogleSkyJamAPI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,8 +12,6 @@ import java.io.IOException;
  * @author Shivam Mistry
  */
 public class LoginClient extends Application {
-
-
 
     public LoginClient() {
     }

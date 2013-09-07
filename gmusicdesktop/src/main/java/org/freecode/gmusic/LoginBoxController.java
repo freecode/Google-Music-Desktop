@@ -1,5 +1,8 @@
 package org.freecode.gmusic;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -9,6 +12,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -27,10 +31,22 @@ public class LoginBoxController implements Initializable {
     private TextField username;
 
     @FXML
+    private CheckBox remember;
+
+    @FXML
     void onButtonClick(ActionEvent event) {
         String username = this.username.getText();
         String password = this.password.getText();
-        System.out.println(username + " " + password);
+        if (remember.isSelected()) {
+            //save the username and password here
+            try {
+                FileWriter writer = new FileWriter(new File(GMusicDesktop.getAppDataDir(), "auth"));
+                writer.write(username + "\n" + password);
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             GMusicGui gui = new GMusicGui();
             gui.setPassword(password);
