@@ -14,11 +14,6 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.alee</groupId>
-            <artifactId>laf</artifactId>
-            <version>1.18</version>
-        </dependency>
-        <dependency>
             <groupId>org.jruby</groupId>
             <artifactId>jruby-complete</artifactId>
             <version>1.7.0.RC2</version>
