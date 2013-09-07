@@ -55,7 +55,6 @@ public class GMusicGui extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         Scene scene = new Scene(root);
         stage.setTitle("GMusicDesktop");
         stage.setScene(scene);
