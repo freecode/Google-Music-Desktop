@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,10 +30,13 @@ public class GMusicGui extends Application {
 
     @Override
     public void init() throws InvalidCredentialsException, IOException, URISyntaxException {
-        if (username == null)
-            username = getParameters().getUnnamed().get(0);
-        if (password == null)
-            password = getParameters().getUnnamed().get(1);
+        List<String> unnamed = getParameters().getUnnamed();
+        if (username == null) {
+            username = unnamed.get(0);
+        }
+        if (password == null) {
+            password = unnamed.get(1);
+        }
         System.out.println(username + " " + password);
         musicApi = new GoogleMusicAPI(new ApacheConnector(), new JSON(), new File("."));
         allApi = new GoogleSkyJamAPI(new ApacheConnector(), new JSON(), new File("."));

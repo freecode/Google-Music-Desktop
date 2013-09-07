@@ -2,7 +2,10 @@ package org.freecode.gmusic;
 
 import javafx.application.Application;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +29,7 @@ public class GMusicDesktop {
             pass = reader.readLine();
             reader.close();
             login = user == null || pass == null;
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
         if (login) {
             Application.launch(LoginClient.class);
@@ -40,12 +43,14 @@ public class GMusicDesktop {
     }
 
     private static void createDirs() {
-        String appDir = System.getProperty("user.home");
-        String dirName = ".gmusicdesktop";
+        String appDir, dirName;
         //lets do it properly on windows
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             appDir = System.getenv("APPDATA");
             dirName = "gmusicdesktop";
+        } else {
+            appDir = System.getProperty("user.home");
+            dirName = ".gmusicdesktop";
         }
         File dir = new File(appDir, dirName);
         if (!dir.exists()) {
