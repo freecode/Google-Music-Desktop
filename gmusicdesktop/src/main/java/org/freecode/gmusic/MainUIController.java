@@ -57,15 +57,39 @@ public class MainUIController {
 
     @FXML
     void initialize() {
-        assert album != null : "fx:id=\"album\" was not injected: check your FXML file 'main-ui.fxml'.";
-        assert albumList != null : "fx:id=\"albumList\" was not injected: check your FXML file 'main-ui.fxml'.";
-        assert artist != null : "fx:id=\"artist\" was not injected: check your FXML file 'main-ui.fxml'.";
-        assert artistList != null : "fx:id=\"artistList\" was not injected: check your FXML file 'main-ui.fxml'.";
-        assert songList != null : "fx:id=\"songList\" was not injected: check your FXML file 'main-ui.fxml'.";
-        assert title != null : "fx:id=\"title\" was not injected: check your FXML file 'main-ui.fxml'.";
+        assert getAlbum() != null : "fx:id=\"album\" was not injected: check your FXML file 'main-ui.fxml'.";
+        assert getAlbumList() != null : "fx:id=\"albumList\" was not injected: check your FXML file 'main-ui.fxml'.";
+        assert getArtist() != null : "fx:id=\"artist\" was not injected: check your FXML file 'main-ui.fxml'.";
+        assert getArtistList() != null : "fx:id=\"artistList\" was not injected: check your FXML file 'main-ui.fxml'.";
+        assert getSongList() != null : "fx:id=\"songList\" was not injected: check your FXML file 'main-ui.fxml'.";
+        assert getTitle() != null : "fx:id=\"title\" was not injected: check your FXML file 'main-ui.fxml'.";
 
 
     }
 
+
+    public Label getAlbum() {
+        return album;
+    }
+
+    public ListView<?> getAlbumList() {
+        return albumList;
+    }
+
+    public Label getArtist() {
+        return artist;
+    }
+
+    public ListView<?> getArtistList() {
+        return artistList;
+    }
+
+    public ListView<?> getSongList() {
+        return songList;
+    }
+
+    public Label getTitle() {
+        return title;
+    }
 }
 

@@ -27,7 +27,7 @@
                                     <Label fx:id="artist" text="No Artist Playing" />
                                     <Label fx:id="album" text="No Album Playing" />
                                     <Label fx:id="title" text="No Title Playing" />
-                                    <Slider />
+                                    <Slider fx:id="slider" />
                                   </children>
                                 </VBox>
                               </children>

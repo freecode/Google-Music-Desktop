@@ -8,6 +8,8 @@ package org.freecode.gmusic.plugin;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.freecode.gmusic.GMusicGui;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import java.io.IOException;
@@ -24,8 +26,10 @@ public class RubyPluginEngine extends PluginEngine {
 
     private final ScriptEngine engine;
     private List<MusicPlugin> plugins;
+    private final GMusicGui gui;
 
-    public RubyPluginEngine() {
+    public RubyPluginEngine(GMusicGui gui) {
+        this.gui = gui;
         engine = manager.getEngineByName("jruby");
         plugins = new LinkedList<MusicPlugin>();
         if (engine == null) {
@@ -42,6 +46,7 @@ public class RubyPluginEngine extends PluginEngine {
             if (o instanceof MusicPlugin) {
                 plugins.add((MusicPlugin) o);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ScriptException e) {
