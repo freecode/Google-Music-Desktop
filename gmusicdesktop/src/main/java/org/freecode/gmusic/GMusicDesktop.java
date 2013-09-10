@@ -1,11 +1,17 @@
 package org.freecode.gmusic;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
+import java.security.KeyFactory;
+import java.security.spec.KeySpec;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,22 +26,75 @@ public class GMusicDesktop {
 
     public static void main(String[] args) {
         createDirs();
-        boolean login = true;
+        login(true, 0);
+    }
+
+    private static void login(boolean remember, int count) {
         String pass = null, user = null;
-        try {
-            FileReader read = new FileReader(new File(appData, "auth"));
-            BufferedReader reader = new BufferedReader(read);
-            user = reader.readLine();
-            pass = reader.readLine();
-            reader.close();
-            login = user == null || pass == null;
-        } catch (IOException ignored) {
-        }
-        if (login) {
-            Application.launch(LoginClient.class);
+        File file = new File(appData, "auth2");
+
+        if (file.exists() && remember) {
+            try {
+                byte[] bytes = readFile(file);
+                SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+                KeySpec spec = new PBEKeySpec(System.getProperty("user.name").toCharArray(),
+                        new byte[]{11, 12, 16, 55, 43, 33, 86, 89}, 65536, 128);
+                SecretKey tmp = factory.generateSecret(spec);
+                SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
+                Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+                cipher.init(Cipher.DECRYPT_MODE, secret);
+                byte[] text = cipher.doFinal(bytes);
+                String userpass = new String(text, "UTF8");
+                user = userpass.split("\n")[0];
+                pass = userpass.split("\n")[1];
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+                login(false, count);
+                return;
+            }
+            try {
+                if (count == 0) {
+                    Application.launch(GMusicGui.class, user, pass);
+                } else {
+                    GMusicGui gui = new GMusicGui();
+                    gui.setUsername(user);
+                    gui.setPassword(pass);
+                    gui.init();
+                    gui.start(new Stage());
+                }
+            } catch (Exception e) {
+                login(false, ++count);
+            }
         } else {
-            Application.launch(GMusicGui.class, user, pass);
+            if (count == 0) {
+                Application.launch(LoginClient.class);
+            } else {
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        try {
+                            LoginClient client = new LoginClient();
+                            client.init();
+                            client.start(new Stage());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
         }
+    }
+
+    private static byte[] readFile(File file) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        DataInputStream in = new DataInputStream(new FileInputStream(file));
+        int read;
+        byte[] buffer = new byte[1024];
+        while ((read = in.read(buffer)) != -1) {
+            bos.write(buffer, 0, read);
+        }
+        in.close();
+        return bos.toByteArray();
     }
 
     public static File getAppDataDir() {

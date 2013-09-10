@@ -24,6 +24,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,23 +41,27 @@ public class GMusicGui extends Application implements ChangeListener {
     private Parent root;
     private HashMap<String, Song> songMap;
     private SongPlayer songPlayer;
+    private Executor executor;
 
     private static final ObservableList EMPTY_LIST = FXCollections.unmodifiableObservableList(FXCollections.observableArrayList());
 
     @Override
     public void init() throws InvalidCredentialsException, IOException, URISyntaxException {
-        List<String> unnamed = getParameters().getUnnamed();
-        if (username == null) {
-            username = unnamed.get(0);
-        }
-        if (password == null) {
-            password = unnamed.get(1);
+        if (getParameters() != null) {
+            List<String> unnamed = getParameters().getUnnamed();
+            if (username == null) {
+                username = unnamed.get(0);
+            }
+            if (password == null) {
+                password = unnamed.get(1);
+            }
         }
         musicApi = new GoogleMusicAPI(new ApacheConnector(), new JSON(), new File("."));
         allApi = new GoogleSkyJamAPI(new ApacheConnector(), new JSON(), new File("."));
         musicApi.login(username, password);
         allApi.login(username, password);
         songMap = new HashMap<String, Song>();
+        executor = Executors.newSingleThreadExecutor();
     }
 
     public void setUsername(String username) {
@@ -113,21 +119,27 @@ public class GMusicGui extends Application implements ChangeListener {
             public void changed(ObservableValue observableValue, Object o, Object o2) {
                 if (o2 == null)
                     return;
-                String title = (String) o2;
-                String album = albumView.getSelectionModel().getSelectedItem().toString();
-                String artist = artistView.getSelectionModel().getSelectedItem().toString();
-                Song s = songMap.get(artist + album + title);
-                if (s != null) {
-                    try {
-                        songPlayer.init(s, musicApi.getSongURL(s));
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                final String title = (String) o2;
+                final String album = albumView.getSelectionModel().getSelectedItem().toString();
+                final String artist = artistView.getSelectionModel().getSelectedItem().toString();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Song s = songMap.get(artist + album + title);
+                        if (s != null) {
+                            try {
+                                songPlayer.init(s, musicApi.getSongURL(s));
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            songPlayer.player().play();
+                            System.out.println(songPlayer.player().getStatus().toString());
+                        }
                     }
-                    songPlayer.player().play();
-                    System.out.println(songPlayer.player().getStatus().toString());
-                }
+                });
+
             }
         });
 

@@ -1,6 +1,7 @@
 package org.freecode.gmusic;
 
 import gmusic.api.model.Song;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
@@ -32,7 +33,7 @@ public class SongPlayer {
         this.root = root;
     }
 
-    public void init(Song song, URI songURL) {
+    public void init(final Song song, URI songURL) {
         if(player() != null) {
             player().stop();
         }
@@ -47,12 +48,16 @@ public class SongPlayer {
             }
         });
         this.song = song;
-        Label artist = (Label) root.lookup("#artist");
-        Label album = (Label) root.lookup("#album");
-        Label title = (Label) root.lookup("#title");
-        artist.setText(song.getArtist());
-        album.setText(song.getAlbum());
-        title.setText(song.getTitle());
+        Platform.runLater(new Runnable() {
+            public void run() {
+                Label artist = (Label) root.lookup("#artist");
+                Label album = (Label) root.lookup("#album");
+                Label title = (Label) root.lookup("#title");
+                artist.setText(song.getArtist());
+                album.setText(song.getAlbum());
+                title.setText(song.getTitle());            }
+        });
+
     }
 
     public MediaPlayer player() {
