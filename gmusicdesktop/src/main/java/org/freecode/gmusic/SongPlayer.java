@@ -33,6 +33,9 @@ public class SongPlayer {
     }
 
     public void init(Song song, URI songURL) {
+        if(player() != null) {
+            player().stop();
+        }
         System.out.println(songURL.toString());
         media = new Media(songURL.toString());
         player = new MediaPlayer(media);
@@ -54,6 +57,10 @@ public class SongPlayer {
 
     public MediaPlayer player() {
         return player;
+    }
+
+    public Song song() {
+        return song;
     }
 
 

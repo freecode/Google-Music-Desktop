@@ -121,11 +121,12 @@ public class GMusicGui extends Application implements ChangeListener {
                     try {
                         songPlayer.init(s, musicApi.getSongURL(s));
                     } catch (URISyntaxException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        e.printStackTrace();
                     } catch (IOException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        e.printStackTrace();
                     }
                     songPlayer.player().play();
+                    System.out.println(songPlayer.player().getStatus().toString());
                 }
             }
         });
