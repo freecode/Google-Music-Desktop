@@ -51,7 +51,6 @@ public class GMusicGui extends Application implements ChangeListener {
         if (password == null) {
             password = unnamed.get(1);
         }
-        System.out.println(username + " " + password);
         musicApi = new GoogleMusicAPI(new ApacheConnector(), new JSON(), new File("."));
         allApi = new GoogleSkyJamAPI(new ApacheConnector(), new JSON(), new File("."));
         musicApi.login(username, password);
